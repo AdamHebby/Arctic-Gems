@@ -12,7 +12,7 @@ class Player {
     }
     public function loadLevels()
     {
-        $handle = fopen("levels.txt", "r");
+        $handle = fopen("Files/levels.txt", "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 $obj = explode(":", $line);

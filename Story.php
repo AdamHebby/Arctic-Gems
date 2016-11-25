@@ -7,7 +7,7 @@ class Story {
     {
         $this->scenes = array();
         $this->ids = array();
-        $this->storyJson = file_get_contents('Story.json');
+        $this->storyJson = file_get_contents('Files/Story.json');
     }
     public function loadScenes()
     {
