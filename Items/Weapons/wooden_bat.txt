@@ -1,0 +1,6 @@
+name: Wooden Bat
+type: weapon
+damage: 5
+carry: 3
+hp: 25
+crit: 20

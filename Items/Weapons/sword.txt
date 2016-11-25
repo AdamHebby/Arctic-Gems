@@ -1,0 +1,6 @@
+name: Sword
+type: weapon
+damage: 12
+carry: 5
+hp: 25
+crit: 50

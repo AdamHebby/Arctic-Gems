@@ -1,0 +1,6 @@
+name: Metal Bat
+type: weapon
+damage: 7
+carry: 3
+hp: 25
+crit: 20

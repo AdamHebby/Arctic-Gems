@@ -1,0 +1,70 @@
+{
+	"scenes": {
+		"SCENE_INTRO": {
+			"name": "Introduction",
+			"text": "Welcome to Arctic Gems!\n You start on a very cold Arctic morning, the sun is just rising and you can still hear the small plane that just dropped you off disappearing in the distance. \nYou have been provided with a small shack, it doesn't offer a lot of protection \nYour mission, is to find the lost Gems of Capistrano. Good luck, you'll need it.",
+			"give": {
+				"item": {
+					"id": "ITEM_002",
+					"count": 1
+				}
+			},
+			"options": {
+				"op": {
+					"goto": "SCENE_002",
+					"text": "Go to your small shack"
+				},
+				"op": {
+					"goto": "SCENE_010",
+					"text": "Head into the thick woods",
+					"requireditems": {
+						"item": {
+							"id": "",
+							"count": 1
+						}
+					}
+				}
+			}
+		},
+		"SCENE_001": {
+			"name": "The Start",
+			"text": "You are back where you started.",
+			"options": {
+				"op": {
+					"goto": "SCENE_002",
+					"text": "Go to your small shack"
+				},
+				"op": {
+					"goto": "SCENE_010",
+					"text": "Head into the thick woods",
+					"requireditems": {
+						"item": {
+							"id": "",
+							"count": 1
+						}
+					}
+				}
+			}
+		},
+		"SCENE_002": {
+			"name": "The Cabin",
+			"text": "You are now in your small shack, there is a bed, sink, toilet, radio and a cabinet. You see something on the floor...and pick it up.",
+			"give": {
+				"item": {
+					"id": "ITEM_002",
+					"count": 1
+				}
+			},
+			"options": {
+				"op": {
+					"give": "ITEM_003",
+					"text": "Check the cabinet"
+				},
+				"op": {
+					"goto": "SCENE_001",
+					"text": "Leave the shack"
+				}
+			}
+		}
+	}
+}

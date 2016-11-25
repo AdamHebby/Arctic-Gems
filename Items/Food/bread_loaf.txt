@@ -1,0 +1,5 @@
+name: Bread Loaf
+type: food
+health: 20
+carry: 1
+hp: 1
