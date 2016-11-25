@@ -89,18 +89,8 @@ function listItems() {
 
 $Inv = new Inventory();
 loadItems();
-
 $Story = new Story();
 $Story->loadScenes();
-print_r($Story);
-// $newScene = new Scene("Scene 1", "SCENE_001", "scene");
-// $Story->addScene($newScene);
-// // print_r($Story);
-// $Player = new Player("Adam");
-// $Player->loadLevels();
-// $Player->giveXP(500);
-// print_r($Player);
-
-// showMenu();
-// $Inv->deleteItem($w3);
-
+$Player = new Player("Adam");
+$Player->loadLevels();
+showMenu();

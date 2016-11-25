@@ -1,0 +1,3 @@
+name: Torch
+type: other
+carry: 1
