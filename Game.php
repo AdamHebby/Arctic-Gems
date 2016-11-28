@@ -78,7 +78,6 @@ function startGame($itemDir)
     $Player->loadLevels();
     echo "Welcome ".$Player->getName()." \n";
     $Player->giveXP(100); // Give 100 XP
-    print_r($Inv);
 }
 
 function validateName($name)
