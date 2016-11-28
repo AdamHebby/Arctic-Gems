@@ -1,6 +1,6 @@
 <?php
 $genID = "ITEM_001";
-$itemDir = array("Items/Food/", "Items/Other/", "Items/Weapons/");
+$itemDir = array("Items/Food/", "Items/Special/", "Items/Tools/");
 
 require('Inventory.php');
 require('Item.php');
@@ -91,6 +91,20 @@ function listItems()
     }
 }
 
+function startGame()
+{
+
+}
+
+function clear()
+{
+    if (strtoupper(PHP_OS) === "LINUX" || strtoupper(PHP_OS) === "CYGWIN") {
+        system('clear');
+    } else {
+        system('cls');
+    }
+}
+
 // --- Load Classes --- // 
 $Inv = new Inventory();
 loadItems();
@@ -108,3 +122,4 @@ $Player->giveXP(100); // Give 100 XP
 $Inv->showPlayerItems();
 
 // showMenu();
+
