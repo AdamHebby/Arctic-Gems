@@ -1,0 +1,5 @@
+id: ITEM_007
+name: Cave Door Key
+type: special
+carry: 1
+hp: 1

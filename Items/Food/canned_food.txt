@@ -1,3 +1,4 @@
+id: ITEM_005
 name: Canned Food
 type: food
 health: 20

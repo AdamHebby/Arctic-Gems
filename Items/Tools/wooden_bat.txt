@@ -1,6 +1,8 @@
+id: ITEM_003
 name: Wooden Bat
 type: weapon
 damage: 5
 carry: 3
 hp: 25
-crit: 20
+critdamage: 20
+critchance: 10

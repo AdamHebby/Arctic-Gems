@@ -1,3 +1,4 @@
+id: ITEM_006
 name: Bread Loaf
 type: food
 health: 20

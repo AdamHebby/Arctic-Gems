@@ -1,3 +1,4 @@
+id: ITEM_002
 name: Torch
 type: tool
 carry: 1

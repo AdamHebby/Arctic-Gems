@@ -1,6 +1,8 @@
+id: ITEM_001
 name: Sword
 type: weapon
 damage: 12
 carry: 5
 hp: 25
-crit: 50
+critdamage: 30
+critchance: 10

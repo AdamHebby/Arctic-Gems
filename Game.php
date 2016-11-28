@@ -10,7 +10,6 @@ require('Player.php');
 
 function getOptions($file)
 {
-    $genID = "ITEM_001";
     $options = array(
         "name" => "",
         "id" => "",
@@ -23,7 +22,6 @@ function getOptions($file)
         );
     $handle = fopen($file, "r");
     if ($handle) {
-        $options["id"] = (string)$genID; // Need to un-automate this
         while (($line = fgets($handle)) !== false) {
             $obj = explode(":", $line);
             $val = $obj[1];
@@ -32,7 +30,6 @@ function getOptions($file)
         }
 
         fclose($handle);
-        $genID++;
     } else {
        
     }
@@ -81,7 +78,7 @@ function startGame($itemDir)
     $Player->loadLevels();
     echo "Welcome ".$Player->getName()." \n";
     $Player->giveXP(100); // Give 100 XP
-
+    print_r($Inv);
 }
 
 function validateName($name)
