@@ -1,5 +1,4 @@
 <?php
-$genID = "ITEM_001";
 $itemDir = array("Items/Food/", "Items/Special/", "Items/Tools/");
 
 require('Inventory.php');
@@ -11,7 +10,7 @@ require('Player.php');
 
 function getOptions($file)
 {
-    global $genID;
+    $genID = "ITEM_001";
     $options = array(
         "name" => "",
         "id" => "",
@@ -24,7 +23,7 @@ function getOptions($file)
         );
     $handle = fopen($file, "r");
     if ($handle) {
-        $options["id"] = (string)$genID;
+        $options["id"] = (string)$genID; // Need to un-automate this
         while (($line = fgets($handle)) !== false) {
             $obj = explode(":", $line);
             $val = $obj[1];
@@ -40,11 +39,8 @@ function getOptions($file)
     return $options;
 }
 
-function loadItems()
+function loadItems($Inv, $itemDir)
 {
-    global $Inv;
-    global $itemDir;
-
     foreach ($itemDir as $val) {
         if ($handle = opendir($val)) {
             while (false !== ($entry = readdir($handle))) {
@@ -61,39 +57,79 @@ function loadItems()
     }
 }
 
-function showMenu()
+function listItems($Inv)
 {
-    echo "\n1) Add an Item \n2) Remove an Item \n3) List Items \n4) Exit Application\n";
-    $option = readline('$ ');
-    switch ($option) {
-        case 1:
-            giveItem();
-            break;
-        case 2:
-            removeItem();
-            break;
-        case 3:
-            listItems();
-            break;
-        case 4:
-            exit();
-            break;
-        default:
-            break;
-    }
-}
-
-function listItems()
-{
-    global $Inv;
     foreach ($Inv as $key => $value) {
         echo($value['item']->getId()." ".$value['item']->getName()."\n");
     }
 }
 
-function startGame()
+function startGame($itemDir)
 {
+    $valName = false;
+    while ($valName == false) {
+        clear();
+        $name = ask("What is your name, Brave Traveller? ", 0);
+        $valName = validateName($name);
+    }
 
+    $Inv = new Inventory();
+    loadItems($Inv, $itemDir);
+    $Story = new Story();
+    $Story->loadScenes();
+    $Player = new Player($name);
+    $Player->loadLevels();
+    echo "Welcome ".$Player->getName()." \n";
+    $Player->giveXP(100); // Give 100 XP
+
+}
+
+function validateName($name)
+{
+    if (strlen($name) > 10) {
+        customError(2, true);
+        return false;
+    } elseif (!ctype_alpha($name)) {
+        customError(3, true);
+        return false;
+    } else {
+        return true;
+    }
+}
+
+function ask($input, $inline)
+{
+    if ($inline == 1) {
+        $answer = readline($input);
+    } else {
+        echo $input . "\n";
+        $answer = readline();
+    }
+    if (trim($answer) == "") {
+        customError(1, true);
+        ask($input, $inline);
+    }
+    return $answer;
+}
+
+function customError($n, $rl)
+{
+    switch ($n) {
+        case 1:
+            echo "Invalid Input! \n";
+            break;
+        case 2:
+            echo "Invalid Input! Must not be longer than 10 characters \n";
+            break;
+        case 3:
+            echo "Invalid Input! Must contain only characters \n";
+            break;
+        default:
+            break;
+    }
+    if ($rl) {
+        readline();
+    }
 }
 
 function clear()
@@ -105,21 +141,4 @@ function clear()
     }
 }
 
-// --- Load Classes --- // 
-$Inv = new Inventory();
-loadItems();
-// print_r($Inv);
-$Story = new Story();
-$Story->loadScenes();
-// print_r($Story);
-$Player = new Player("Adam");
-$Player->loadLevels();
-// print_r($Player);
-
-echo "Welcome ".$Player->getName()." \n";
-$Player->giveXP(100); // Give 100 XP
-
-$Inv->showPlayerItems();
-
-// showMenu();
-
+startGame($itemDir);
