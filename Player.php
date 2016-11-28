@@ -1,5 +1,7 @@
 <?php
-class Player {
+
+class Player
+{
     protected $name;
     protected $health = 100;
     protected $xp = 0;
@@ -7,7 +9,8 @@ class Player {
     protected $maxCarry = 100;
     protected $levels = array();
 
-    public function __construct($name) {
+    public function __construct($name)
+    {
         $this->name = $name;
     }
     public function loadLevels()
@@ -21,12 +24,12 @@ class Player {
                 $this->levels["$obj"] = trim($val);
             }
             fclose($handle);
-        } 
+        }
     }
     public function giveXP($amount)
     {
         $this->xp += $amount;
-        for ($i=$this->level; $i < count($this->levels); $i++) { 
+        for ($i=$this->level; $i < count($this->levels); $i++) {
             if ($this->xp < $this->levels["$i"]) {
                 $this->level = ($i - 1);
                 break;
@@ -36,10 +39,24 @@ class Player {
             } // else carry on
         }
     }
-    public function getName() {return $this->name;}
-    public function getHealth() {return $this->health;}
-    public function getXP() {return $this->xp;}
-    public function getLevel() {return $this->level;}
-    public function getMaxCarry() {return $this->maxCarry;}
+    public function getName()
+    {
+        return $this->name;
+    }
+    public function getHealth()
+    {
+        return $this->health;
+    }
+    public function getXP()
+    {
+        return $this->xp;
+    }
+    public function getLevel()
+    {
+        return $this->level;
+    }
+    public function getMaxCarry()
+    {
+        return $this->maxCarry;
+    }
 }
-?> 

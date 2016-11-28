@@ -1,14 +1,16 @@
-<?php 
+<?php
 $genID = "ITEM_001";
 $itemDir = array("Items/Food/", "Items/Other/", "Items/Weapons/");
 
 require('Inventory.php');
 require('Item.php');
 require('Story.php');
+require('Option.php');
 require('Scene.php');
 require('Player.php');
 
-function getOptions($file) {
+function getOptions($file)
+{
     global $genID;
     $options = array(
         "name" => "",
@@ -34,11 +36,12 @@ function getOptions($file) {
         $genID++;
     } else {
        
-    } 
+    }
     return $options;
 }
 
-function loadItems() {
+function loadItems()
+{
     global $Inv;
     global $itemDir;
 
@@ -58,7 +61,8 @@ function loadItems() {
     }
 }
 
-function showMenu() {
+function showMenu()
+{
     echo "\n1) Add an Item \n2) Remove an Item \n3) List Items \n4) Exit Application\n";
     $option = readline('$ ');
     switch ($option) {
@@ -75,22 +79,32 @@ function showMenu() {
             exit();
             break;
         default:
-        break;
+            break;
     }
 }
 
-function listItems() {
+function listItems()
+{
     global $Inv;
     foreach ($Inv as $key => $value) {
         echo($value['item']->getId()." ".$value['item']->getName()."\n");
     }
 }
 
-
+// --- Load Classes --- // 
 $Inv = new Inventory();
 loadItems();
+// print_r($Inv);
 $Story = new Story();
 $Story->loadScenes();
+// print_r($Story);
 $Player = new Player("Adam");
 $Player->loadLevels();
-showMenu();
+// print_r($Player);
+
+echo "Welcome ".$Player->getName()." \n";
+$Player->giveXP(100); // Give 100 XP
+
+$Inv->showPlayerItems();
+
+// showMenu();

@@ -1,9 +1,11 @@
-<?php 
-class Story {
+<?php
+
+class Story
+{
     protected $scenes = array();
     protected $ids = array();
 
-    function __construct()
+    public function __construct()
     {
         $this->scenes = array();
         $this->ids = array();
@@ -60,9 +62,11 @@ class Story {
     public function addScene(Scene $scene)
     {
         $id = $scene->getId();
-        if (!$id) throw new Exception('The Story requires scenes with unique ID values.');
+        if (!$id) {
+            throw new Exception('The Story requires scenes with unique ID values.');
+        }
         $this->scenes[$id] = array('scene' => $scene);
-        $this->ids[] = $id;  
+        $this->ids[] = $id;
     }
     public function updateScene(Scene $scene, $qty)
     {
@@ -77,21 +81,5 @@ class Story {
             unset($this->ids[$index]);
             $this->ids = array_values($this->ids);
         }
-    }
-}
-class Option {
-    protected $text;
-    protected $opNumber;
-    protected $give;
-    protected $next;
-    protected $reqItems = array();
-
-    function __construct($next, $text, $give, $opNumber, $reqItems)
-    {
-        $this->text = $text;
-        $this->opNumber = $opNumber;
-        $this->reqItems = $reqItems;
-        $this->give = $give;
-        $this->next = $next;
     }
 }
