@@ -8,10 +8,12 @@ class Player
     protected $level = 1;
     protected $maxCarry = 100;
     protected $levels = array();
+    protected $continuePlaying = true;
 
     public function __construct($name)
     {
         $this->name = $name;
+        $this->continuePlaying = true;
     }
     public function loadLevels()
     {
@@ -37,6 +39,14 @@ class Player
                 $this->level = $i;
                 break;
             } // else carry on
+        }
+    }
+    public function continuePlaying($input = NULL)
+    {
+        if ($input === NULL) {
+            return $this->continuePlaying;
+        } else {
+            $this->continuePlaying = false;
         }
     }
     public function getName()
