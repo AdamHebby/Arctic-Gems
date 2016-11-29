@@ -1,4 +1,5 @@
 <?php
+namespace Story;
 
 class Option
 {

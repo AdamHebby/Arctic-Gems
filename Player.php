@@ -1,4 +1,5 @@
 <?php
+namespace Player;
 
 class Player
 {

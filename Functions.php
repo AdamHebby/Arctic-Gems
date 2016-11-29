@@ -36,7 +36,7 @@ function loadItems($Inv, $itemDir)
                     $options = array();
                     $options = getOptions($val . $entry);
                     $entry = substr($entry, 0, -4);
-                    $newItem = new Item($options["name"], $options["id"], $options["hp"], $options["type"], $options["crit"], $options["carry"], $options["health"], $options["damage"]);
+                    $newItem = new Inventory\Item($options["name"], $options["id"], $options["hp"], $options["type"], $options["crit"], $options["carry"], $options["health"], $options["damage"]);
                     $Inv->addItem($newItem);
                 }
             }
@@ -117,11 +117,11 @@ function startGame($itemDir)
         $name = ask("What is your name, Brave Traveller? ", 0);
         $valName = validateName($name);
     }
-    $Inv = new Inventory();
+    $Inv = new Inventory\Inventory();
     loadItems($Inv, $itemDir);
-    $Story = new Story();
+    $Story = new Story\Story();
     $Story->loadScenes();
-    $Player = new Player($name);
+    $Player = new Player\Player($name);
     $Player->loadLevels();
     echo "Welcome ".$Player->getName()."\n";
     $Player->giveXP(100); // Give 100 XP

@@ -1,6 +1,7 @@
 <?php
+namespace Inventory;
 
-class Inventory implements Iterator, Countable
+class Inventory implements \Iterator, \Countable
 {
     protected $items = array();
     protected $position = 0;
