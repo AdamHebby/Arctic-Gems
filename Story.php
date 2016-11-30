@@ -6,7 +6,7 @@ class Story
     protected $scenes = array();
     protected $ids = array();
 
-    public function __construct()
+    public function __construct() 
     {
         $this->scenes = array();
         $this->ids = array();
@@ -21,35 +21,17 @@ class Story
             $id = $k;
             $name = $v["name"];
             $text = $v["text"];
-            if (isset($v["give"])) {
-                $give = $v["give"];
-            } else {
-                $give = null;
-            }
-            if (isset($v["xp"])) {
-                $giveXP = $v["xp"];
-            } else {
-                $giveXP = "0";
-            }
+            $give = isset($v["give"]) ? $v["give"] : null;
+            $giveXP = isset($v["xp"]) ? $v["xp"] : 0;
             $options = $v["options"];
             $optionObjArr = array();
-            $opNum = 1;
-            foreach ($options as $key => $value) {
-                $opGoto = $options["op"]["goto"];
-                $opText = $options["op"]["text"];
-                if (isset($options["op"]["requireditems"])) {
-                    $opRequireditems = $options["op"]["requireditems"];
-                } else {
-                    $opRequireditems = null;
-                }
-                if (isset($options["op"]["give"])) {
-                    $opGive = $options["op"]["give"];
-                } else {
-                    $opGive = null;
-                }
+            for ($opNum=1; $opNum < count($options); $opNum++) { 
+                $opGoto = isset($options["op-".$opNum]["goto"]) ? $options["op-".$opNum]["goto"] : null;
+                $opText = $options["op-".$opNum]["text"];
+                $opRequireditems = isset($options["op-".$opNum]["requireditems"]) ? $options["op-".$opNum]["requireditems"] : null;
+                $opGive = isset($options["op-".$opNum]["give"]) ? $options["op-".$opNum]["give"] : null;
                 $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditems);
                 array_push($optionObjArr, array("$opNum" => $newOption));
-                $opNum++;
             }
 
             $newScene = new Scene($id, $name, $text, $give, $giveXP, $optionObjArr, "scene");

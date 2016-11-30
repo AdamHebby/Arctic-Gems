@@ -10,11 +10,11 @@
 				}
 			},
 			"options": {
-				"op": {
+				"op-1": {
 					"goto": "SCENE_002",
 					"text": "Go to your small shack"
 				},
-				"op": {
+				"op-2": {
 					"goto": "SCENE_010",
 					"text": "Head into the thick woods",
 					"requireditems": {
@@ -30,11 +30,11 @@
 			"name": "The Start",
 			"text": "You are back where you started.",
 			"options": {
-				"op": {
+				"op-1": {
 					"goto": "SCENE_002",
 					"text": "Go to your small shack"
 				},
-				"op": {
+				"op-2": {
 					"goto": "SCENE_010",
 					"text": "Head into the thick woods",
 					"requireditems": {
@@ -56,11 +56,11 @@
 				}
 			},
 			"options": {
-				"op": {
+				"op-1": {
 					"give": "ITEM_003",
 					"text": "Check the cabinet"
 				},
-				"op": {
+				"op-2": {
 					"goto": "SCENE_001",
 					"text": "Leave the shack"
 				}
