@@ -54,10 +54,10 @@ function listItems($Inv)
 
 function validateName($name)
 {
-    if (strlen($name) > 10) {
+    if (strlen($name) > 15) {
         customError(2, true);
         return false;
-    } elseif (!ctype_alpha($name)) {
+    } elseif (!preg_match("/^[a-zA-Z\s]+$/", $name)) {
         customError(3, true);
         return false;
     } else {
@@ -75,7 +75,7 @@ function ask($input, $inline)
     }
     if (trim($answer) == "") {
         customError(1, true);
-        ask($input, $inline);
+        $answer = readline();
     }
     return $answer;
 }
@@ -87,7 +87,7 @@ function customError($n, $rl)
             echo "Invalid Input! \n";
             break;
         case 2:
-            echo "Invalid Input! Must not be longer than 10 characters \n";
+            echo "Invalid Input! Must not be longer than 15 characters \n";
             break;
         case 3:
             echo "Invalid Input! Must contain only characters \n";
