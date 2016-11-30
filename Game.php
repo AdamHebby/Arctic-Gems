@@ -1,12 +1,10 @@
 <?php
 $itemDir = array("Items/Food/", "Items/Special/", "Items/Tools/");
 
-require('Inventory.php');
-require('Item.php');
-require('Story.php');
-require('Option.php');
-require('Scene.php');
-require('Player.php');
+spl_autoload_register(function ($class_name) {
+    $class = end(explode("\\",$class_name));
+    include $class . '.php';
+});
 require('Functions.php');
 
 $objects = startGame($itemDir);
@@ -20,4 +18,4 @@ while ($objects["Player"]->continuePlaying()) {
     $objects["Player"]->continuePlaying(false);
 }
 
-echo "Thanks for Playing ".$objects["Player"]->getName()."\n";
+// echo "Thanks for Playing ".$objects["Player"]->getName()."\n";
