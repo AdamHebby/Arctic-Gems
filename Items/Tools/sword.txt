@@ -1,8 +1,8 @@
-id: ITEM_001
-name: Sword
-type: weapon
-damage: 12
-carry: 5
-hp: 25
-critdamage: 30
-critchance: 10
+ItemID: ITEM_001
+ItemName: Sword
+ItemType: weapon
+Damage: 12
+InventorySpace: 5
+HP: 25
+CriticalDamage: 30
+CriticalChance: 10

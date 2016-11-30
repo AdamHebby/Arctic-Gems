@@ -1,4 +1,4 @@
-id: ITEM_002
-name: Torch
-type: tool
-carry: 1
+ItemID: ITEM_002
+ItemName: Torch
+ItemType: tool
+InventorySpace: 1 

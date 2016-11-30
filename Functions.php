@@ -2,14 +2,15 @@
 function getOptions($file)
 {
     $options = array(
-        "name" => "",
-        "id" => "",
-        "hp" => "",
-        "type" => "",
-        "crit" => "",
-        "carry" => "",
-        "health" => "",
-        "damage" => ""
+        "ItemID" => "",
+        "ItemName" => "",
+        "ItemType" => "",
+        "HP" => "",
+        "Damage" => "",
+        "GivesHealth" => "",
+        "InventorySpace" => "",
+        "CriticalDamage" => "",
+        "CriticalChance" => ""
         );
     $handle = fopen($file, "r");
     if ($handle) {
@@ -36,13 +37,24 @@ function loadItems($Inv, $itemDir)
                     $options = array();
                     $options = getOptions($val . $entry);
                     $entry = substr($entry, 0, -4);
-                    $newItem = new Inventory\Item($options["name"], $options["id"], $options["hp"], $options["type"], $options["crit"], $options["carry"], $options["health"], $options["damage"]);
+                    $newItem = new Inventory\Item(
+                        $options["ItemID"],
+                        $options["ItemName"],
+                        $options["ItemType"],
+                        $options["HP"],
+                        $options["Damage"],
+                        $options["GivesHealth"],
+                        $options["InventorySpace"],
+                        $options["CriticalDamage"],
+                        $options["CriticalChance"]
+                    );
                     $Inv->addItem($newItem);
                 }
             }
             closedir($handle);
         }
     }
+    var_dump($Inv);
 }
 
 function listItems($Inv)

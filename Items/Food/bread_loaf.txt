@@ -1,6 +1,6 @@
-id: ITEM_006
-name: Bread Loaf
-type: food
-health: 20
-carry: 1
-hp: 1
+ItemID: ITEM_006
+ItemName: Bread Loaf
+ItemType: food
+GivesHealth: 20
+InventorySpace: 1
+HP: 1

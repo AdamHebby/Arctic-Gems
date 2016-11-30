@@ -1,8 +1,8 @@
-id: ITEM_003
-name: Wooden Bat
-type: weapon
-damage: 5
-carry: 3
-hp: 25
-critdamage: 20
-critchance: 10
+ItemID: ITEM_003
+ItemName: Wooden Bat
+ItemType: weapon
+Damage: 5
+InventorySpace: 3
+HP: 25
+CriticalDamage: 20
+CriticalChance: 10

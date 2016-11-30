@@ -1,6 +1,6 @@
-id: ITEM_005
-name: Canned Food
-type: food
-health: 20
-carry: 1
-hp: 1
+ItemID: ITEM_005
+ItemName: Canned Food
+ItemType: food
+GivesHealth: 20
+InventorySpace: 1
+HP: 1

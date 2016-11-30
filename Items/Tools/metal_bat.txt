@@ -1,8 +1,8 @@
-id: ITEM_004
-name: Metal Bat
-type: weapon
-damage: 7
-carry: 3
-hp: 25
-critdamage: 20
-critchance: 10
+ItemID: ITEM_004
+ItemName: Metal Bat
+ItemType: weapon
+Damage: 7
+InventorySpace: 3
+HP: 25
+CriticalDamage: 25
+CriticalChance: 10
