@@ -29,7 +29,7 @@ class Inventory implements \Iterator, \Countable
     {
         $id = $item->getId();
         if (!$id) {
-            throw new Exception('The Inventory requires items with unique ID values.');
+            throw new \Exception('The Inventory requires items with unique ID values.');
         }
         if (isset($this->items[$id])) {
             $this->updateItem($item, $this->items[$id]['qty'] + 0);
