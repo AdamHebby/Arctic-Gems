@@ -3,7 +3,7 @@ $itemDir = array("Items/Food/", "Items/Special/", "Items/Tools/");
 
 spl_autoload_register(function ($class_name) {
     $class = end(explode("\\",$class_name));
-    include $class . '.php';
+    require("Classes/$class.php");
 });
 require('Functions.php');
 
