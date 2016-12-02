@@ -17,4 +17,8 @@ class Option
         $this->give = $give;
         $this->next = $next;
     }
+    public function getOptionText()
+    {
+        return $this->text;
+    }
 }

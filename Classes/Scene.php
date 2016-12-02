@@ -17,10 +17,6 @@ class Scene
         $this->optionObjArr = $optionObjArr;
         $this->type = $type;
     }
-    public function showScene()
-    {
-        
-    }
     public function getId()
     {
         return $this->id;
@@ -32,6 +28,14 @@ class Scene
     public function getName()
     {
         return $this->name;
+    }
+    public function getText()
+    {
+        return $this->text;
+    }
+    public function getOptionList()
+    {
+        return $this->optionObjArr;
     }
     public function setId($input)
     {

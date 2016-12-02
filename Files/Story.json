@@ -2,7 +2,7 @@
 	"scenes": {
 		"SCENE_INTRO": {
 			"name": "Introduction",
-			"text": "Welcome to Arctic Gems!\n You start on a very cold Arctic morning, the sun is just rising and you can still hear the small plane that just dropped you off disappearing in the distance. \nYou have been provided with a small shack, it doesn't offer a lot of protection \nYour mission, is to find the lost Gems of Capistrano. Good luck, you'll need it.",
+			"text": "Welcome to Arctic Gems! \nYou start on a very cold Arctic morning, the sun is just rising and you can still hear the small plane that just dropped you off disappearing in the distance. \nYou have been provided with a small shack, it doesn't offer a lot of protection \nYour mission, is to find the lost Gems of Capistrano. Good luck, you'll need it.",
 			"give": {
 				"item": {
 					"id": "ITEM_002",

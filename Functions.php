@@ -54,7 +54,6 @@ function loadItems($Inv, $itemDir)
             closedir($handle);
         }
     }
-    var_dump($Inv);
 }
 
 function listItems($Inv)
@@ -104,6 +103,9 @@ function customError($n, $rl)
         case 3:
             echo "Invalid Input! Must contain only characters \n";
             break;
+        case 4:
+            echo "Invalid Input! That is not an option \n";
+            break;
         default:
             break;
     }
@@ -146,6 +148,30 @@ function nextScene($objects)
     $Inv = $objects["Inv"];
     $Story = $objects["Story"];
     $Player = $objects["Player"];
+    $sceneObject = $Story->getScene($Player->getCurrentScene());
+    $sceneObject = $sceneObject["scene"];
+    showScene($Inv, $Story, $Player, $sceneObject);
+}
 
-    // Foreach over Scenes
+function showScene($Inv, $Story, $Player, Story\Scene $sceneObject)
+{
+    echo($sceneObject->getText() . "\n\n");
+    $options = $sceneObject->getOptionList();
+    foreach ($options as $key => $option) {
+        $optionText = $option->getOptionText();
+        $optionNumber = split('-', $key);
+        echo "[$optionNumber[1]] $optionText \n";
+    }
+    $userChoice = getUserChoice($Player->getName(), count($options));
+}
+
+function getUserChoice($userName, $optionCount)
+{   
+    echo "\033[32mEnter a number that represents an option.\033[0m \n";
+    $userChoice = readline("$userName > ");
+    if ($userChoice > $optionCount) {
+        customError(4, true);
+    } elseif (!preg_match("/^[0-9]+$/", $userChoice)) {
+        customError(4, true);
+    } 
 }

@@ -25,18 +25,22 @@ class Story
             $giveXP = isset($v["xp"]) ? $v["xp"] : 0;
             $options = $v["options"];
             $optionObjArr = array();
-            for ($opNum=1; $opNum < count($options); $opNum++) { 
+            for ($opNum=1; $opNum < count($options) + 1; $opNum++) { 
                 $opGoto = isset($options["op-".$opNum]["goto"]) ? $options["op-".$opNum]["goto"] : null;
                 $opText = $options["op-".$opNum]["text"];
                 $opRequireditems = isset($options["op-".$opNum]["requireditems"]) ? $options["op-".$opNum]["requireditems"] : null;
                 $opGive = isset($options["op-".$opNum]["give"]) ? $options["op-".$opNum]["give"] : null;
                 $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditems);
-                array_push($optionObjArr, array("$opNum" => $newOption));
+                $optionObjArr["op-".$opNum] = $newOption;
             }
 
             $newScene = new Scene($id, $name, $text, $give, $giveXP, $optionObjArr, "scene");
             $this->addScene($newScene);
         }
+    }
+    public function getScene($name)
+    {
+        return $this->scenes[$name];
     }
     public function isEmpty()
     {

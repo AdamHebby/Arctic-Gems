@@ -10,6 +10,7 @@ class Player
     protected $maxCarry = 100;
     protected $levels = array();
     protected $continuePlaying = true;
+    protected $currentScene = "SCENE_INTRO";
 
     public function __construct($name)
     {
@@ -50,6 +51,10 @@ class Player
             $this->continuePlaying = false;
         }
     }
+    public function getCurrentScene()
+    {
+        return $this->currentScene;
+    }
     public function getName()
     {
         return $this->name;
@@ -69,5 +74,9 @@ class Player
     public function getMaxCarry()
     {
         return $this->maxCarry;
+    }
+    public function setCurrentScene($scene)
+    {
+        $this->currentScene = $scene;
     }
 }
