@@ -42,7 +42,7 @@ class Inventory implements \Iterator, \Countable
         if (isset($this->items[$id])) {
             $this->updateItem($item, $this->items[$id]['qty'] + 0);
         } else {
-            $this->items[$id] = array('item' => $item, 'qty' => 1);
+            $this->items[$id] = array('item' => $item, 'qty' => 0);
             $this->ids[] = $id;
         }
     }
