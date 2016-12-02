@@ -18,8 +18,12 @@
 					"goto": "SCENE_010",
 					"text": "Head into the thick woods",
 					"requireditems": {
-						"item": {
-							"id": "",
+						"ITEM_002": {
+							"id": "ITEM_002",
+							"count": 1
+						},
+						"ITEM_001": {
+							"id": "ITEM_001",
 							"count": 1
 						}
 					}
@@ -38,8 +42,12 @@
 					"goto": "SCENE_010",
 					"text": "Head into the thick woods",
 					"requireditems": {
-						"item": {
-							"id": "",
+						"ITEM_002": {
+							"id": "ITEM_002",
+							"count": 1
+						},
+						"ITEM_001": {
+							"id": "ITEM_001",
 							"count": 1
 						}
 					}

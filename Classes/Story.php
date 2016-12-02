@@ -12,7 +12,7 @@ class Story
         $this->ids = array();
         $this->storyJson = file_get_contents('Files/Story.json');
     }
-    public function loadScenes()
+    public function loadScenes($Inventory)
     {
         $json = $this->storyJson;
         $json = json_decode($json, true);
@@ -29,8 +29,18 @@ class Story
                 $opGoto = isset($options["op-".$opNum]["goto"]) ? $options["op-".$opNum]["goto"] : null;
                 $opText = $options["op-".$opNum]["text"];
                 $opRequireditems = isset($options["op-".$opNum]["requireditems"]) ? $options["op-".$opNum]["requireditems"] : null;
+                $opRequireditemObjects = array();
+                if ($opRequireditems != null) {
+                    foreach ($opRequireditems as $item) {
+                        $itemId = $item["id"];
+                        $qty = $item["count"];
+                        $reqItem = $Inventory->getItemByID($item["id"]);
+                        $index = array_search($reqItem->getId(), $opRequireditems);
+                        $opRequireditemObjects[$itemId] = array("item" => $reqItem, "qty" => $qty);
+                    }
+                }
                 $opGive = isset($options["op-".$opNum]["give"]) ? $options["op-".$opNum]["give"] : null;
-                $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditems);
+                $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditemObjects);
                 $optionObjArr["op-".$opNum] = $newOption;
             }
 

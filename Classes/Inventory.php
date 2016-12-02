@@ -25,6 +25,14 @@ class Inventory implements \Iterator, \Countable
             }
         }
     }
+    public function getItemByID($id)
+    {
+        if (in_array($id, $this->ids) == false) {
+            return null;
+        } else {
+            return $this->items[$id]["item"];
+        }
+    }
     public function addItem(Item $item)
     {
         $id = $item->getId();
@@ -34,8 +42,17 @@ class Inventory implements \Iterator, \Countable
         if (isset($this->items[$id])) {
             $this->updateItem($item, $this->items[$id]['qty'] + 0);
         } else {
-            $this->items[$id] = array('item' => $item, 'qty' => 0);
+            $this->items[$id] = array('item' => $item, 'qty' => 1);
             $this->ids[] = $id;
+        }
+    }
+    public function getItemCount(Item $item)
+    {
+        $id = $item->getId();
+        if (isset($this->items[$id])) {
+            return $this->items[$id]['qty'];
+        } else {
+            return 0;
         }
     }
     public function updateItem(Item $item, $qty)

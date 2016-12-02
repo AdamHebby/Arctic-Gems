@@ -12,10 +12,10 @@ $Player = $objects["Player"];
 $Inv = $objects["Inv"];
 $Story = $objects["Story"];
 
-while ($objects["Player"]->continuePlaying()) {
+while ($Player->continuePlaying()) {
     // Keep Playing
-    nextScene($objects);
-    $objects["Player"]->continuePlaying(false);
+    nextScene($Inv, $Story, $Player);
+    $Player->continuePlaying(false);
 }
 
 // echo "Thanks for Playing ".$objects["Player"]->getName()."\n";

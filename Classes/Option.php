@@ -9,7 +9,7 @@ class Option
     protected $next;
     protected $reqItems = array();
 
-    public function __construct($next, $text, $give, $opNumber, $reqItems)
+    public function __construct($next = null, $text, $give, $opNumber, $reqItems = null)
     {
         $this->text = $text;
         $this->opNumber = $opNumber;
@@ -20,5 +20,29 @@ class Option
     public function getOptionText()
     {
         return $this->text;
+    }
+    public function hasRequiredItems()
+    {
+        if ($this->reqItems == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public function getRequiredItems()
+    {
+        return $this->reqItems;
+    }
+    public function getGive()
+    {
+        return $this->give;
+    }
+    public function getNextScene()
+    {
+        return $this->next;
+    }
+    public function getOptionNumber()
+    {
+        return $this->opNumber;
     }
 }

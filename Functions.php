@@ -134,35 +134,95 @@ function startGame($itemDir)
     $Inv = new Inventory\Inventory();
     loadItems($Inv, $itemDir);
     $Story = new Story\Story();
-    $Story->loadScenes();
+    $Story->loadScenes($Inv);
     $Player = new Player\Player($name);
     $Player->loadLevels();
-    echo "Welcome ".$Player->getName()."\n";
+    clear();
     $Player->giveXP(100); // Give 100 XP
     $objects = array("Inv" => $Inv, "Story" => $Story, "Player" => $Player);
     return $objects;
 }
 
-function nextScene($objects)
+function nextScene($Inv, $Story, $Player)
 {
-    $Inv = $objects["Inv"];
-    $Story = $objects["Story"];
-    $Player = $objects["Player"];
     $sceneObject = $Story->getScene($Player->getCurrentScene());
     $sceneObject = $sceneObject["scene"];
-    showScene($Inv, $Story, $Player, $sceneObject);
+    showScene($Inv, $Story, $Player, $sceneObject, true);
 }
 
-function showScene($Inv, $Story, $Player, Story\Scene $sceneObject)
+function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
 {
-    echo($sceneObject->getText() . "\n\n");
+    if ($showText) {
+        echo($sceneObject->getText() . "\n\n");
+    }
     $options = $sceneObject->getOptionList();
+    showUserOptions($options);
+    $userChoice = false;
+    while ($userChoice == false) {
+        $userChoice = getUserChoice($Player->getName(), count($options));
+    }
+    $chosenOption = $options["op-".$userChoice];
+    $parsed = parseUserChoice($Inv, $Story, $Player, $sceneObject, $chosenOption);
+    if ($parsed == true) {
+        nextScene($Inv, $Story, $Player);
+    } else {
+        showScene($Inv, $Story, $Player, $sceneObject, false);
+    }
+}
+
+function showUserOptions($options)
+{
     foreach ($options as $key => $option) {
         $optionText = $option->getOptionText();
         $optionNumber = split('-', $key);
         echo "[$optionNumber[1]] $optionText \n";
     }
-    $userChoice = getUserChoice($Player->getName(), count($options));
+}
+
+function denyRequiredItems($reqItems, $neededItems)
+{
+    echo "You do not have the correct items to go here \n";
+    foreach ($reqItems as $item) {
+        $itemName = $item["item"]->getName();
+        $itemId = $item["item"]->getId();
+        $itemQty = $item["qty"];
+        if (isset($neededItems[$itemId])) {
+            $itemQty = $neededItems[$itemId]["qtyNeeded"];
+        }
+        echo "$itemName ($itemQty) \n";
+    }
+    echo "\n";
+}
+function parseUserChoice($Inv, $Story, $Player, Story\Scene $sceneObject, $chosenOption)
+{
+    if ($chosenOption->hasRequiredItems() == false) {
+        $nextScene = $chosenOption->getNextScene();
+        if ($nextScene != null) {
+            $Player->setCurrentScene($nextScene);
+        }
+        return true;
+    } else {
+        $reqItems = $chosenOption->getRequiredItems();
+        foreach ($reqItems as $item) {
+            $itemOwnedCount = $Inv->getItemCount($item["item"]);
+            $itemId = $item["item"]->getId();
+            if ($itemOwnedCount < $item["qty"]) {
+                $needed = $item["qty"] - $itemOwnedCount;
+                $lacking = array("id" => $itemId, "qtyNeeded" => $needed);
+                $neededItems[$itemId] = $lacking;
+            }
+        }
+        if (isset($neededItems)) {
+            denyRequiredItems($reqItems, $neededItems);
+            return false;
+        } else {
+            $nextScene = $chosenOption->getNextScene();
+            if ($nextScene != null) {
+                $Player->setCurrentScene($nextScene);
+            }
+            return true;
+        }
+    }
 }
 
 function getUserChoice($userName, $optionCount)
@@ -171,7 +231,10 @@ function getUserChoice($userName, $optionCount)
     $userChoice = readline("$userName > ");
     if ($userChoice > $optionCount) {
         customError(4, true);
+        return false;
     } elseif (!preg_match("/^[0-9]+$/", $userChoice)) {
         customError(4, true);
-    } 
+        return false;
+    }
+    return $userChoice;
 }
