@@ -162,7 +162,7 @@ function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
         $userChoice = getUserChoice($Player->getName(), count($options));
     }
     $chosenOption = $options["op-".$userChoice];
-    $parsed = parseUserChoice($Inv, $Story, $Player, $sceneObject, $chosenOption);
+    $parsed = parseUserChoice($Inv, $Player, $chosenOption);
     if ($parsed == true) {
         nextScene($Inv, $Story, $Player);
     } else {
@@ -181,7 +181,7 @@ function showUserOptions($options)
 
 function denyRequiredItems($reqItems, $neededItems)
 {
-    echo "You do not have the correct items to go here \n";
+    echo "\033[31mYou do not have the correct items to go here\033[0m \nYou need: \n";
     foreach ($reqItems as $item) {
         $itemName = $item["item"]->getName();
         $itemId = $item["item"]->getId();
@@ -189,17 +189,18 @@ function denyRequiredItems($reqItems, $neededItems)
         if (isset($neededItems[$itemId])) {
             $itemQty = $neededItems[$itemId]["qtyNeeded"];
         }
-        echo "$itemName ($itemQty) \n";
+        echo "  $itemName ($itemQty) \n";
     }
     echo "\n";
 }
-function parseUserChoice($Inv, $Story, $Player, Story\Scene $sceneObject, $chosenOption)
+function parseUserChoice($Inv, $Player, $chosenOption)
 {
     if ($chosenOption->hasRequiredItems() == false) {
         $nextScene = $chosenOption->getNextScene();
         if ($nextScene != null) {
             $Player->setCurrentScene($nextScene);
         }
+        parseOptionImpact($Inv, $Player, $chosenOption);
         return true;
     } else {
         $reqItems = $chosenOption->getRequiredItems();
@@ -220,9 +221,30 @@ function parseUserChoice($Inv, $Story, $Player, Story\Scene $sceneObject, $chose
             if ($nextScene != null) {
                 $Player->setCurrentScene($nextScene);
             }
+            parseOptionImpact($Inv, $Player, $chosenOption);
             return true;
         }
     }
+}
+
+function parseOptionImpact($Inv, $Player, $chosenOption)
+{
+    if ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == false) {
+        givePlayerItems($Inv, $Player, $chosenOption->getGive());
+        $chosenOption->optionUsed();
+    }
+}
+
+function givePlayerItems($Inv, $Player, $giveItems)
+{
+    foreach ($giveItems as $giveId => $giveOptions) {
+        $count = $giveOptions["count"];
+        $itemObj = $Inv->getItemByID($giveId);
+        $itemName = $itemObj->getName();
+        echo $giveOptions["text"] . "\n\n";
+        echo "\e[33mItem Found! +$count '$itemName'\e[39m\n";
+    }
+    echo "\n";
 }
 
 function getUserChoice($userName, $optionCount)

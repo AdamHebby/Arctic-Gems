@@ -8,6 +8,7 @@ class Option
     protected $give;
     protected $next;
     protected $reqItems = array();
+    protected $optionUsed;
 
     public function __construct($next = null, $text, $give, $opNumber, $reqItems = null)
     {
@@ -16,6 +17,15 @@ class Option
         $this->reqItems = $reqItems;
         $this->give = $give;
         $this->next = $next;
+        $this->optionUsed = false;
+    }
+    public function optionUsed()
+    {
+        $this->optionUsed = true;
+    }
+    public function getOptionUsed()
+    {
+        return $this->optionUsed;
     }
     public function getOptionText()
     {

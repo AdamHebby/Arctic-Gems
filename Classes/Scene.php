@@ -6,7 +6,8 @@ class Scene
     protected $type;
     protected $name;
     protected $id;
-    // protected $giveItems;
+    protected $visited;
+    protected $hidden;
     public function __construct($id, $name, $text, $give, $giveXP, $optionObjArr, $type)
     {
         $this->id = $id;
@@ -16,6 +17,8 @@ class Scene
         $this->giveXP = $giveXP;
         $this->optionObjArr = $optionObjArr;
         $this->type = $type;
+        $this->visited = false;
+        $this->hidden = false;
     }
     public function getId()
     {
