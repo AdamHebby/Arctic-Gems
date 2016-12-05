@@ -105,7 +105,6 @@ function isMappedFunction($input) // I love this :D
     $mappedFunction = array("inv" => "showInventory", "menu" => "showMenu");
     if (strlen(trim($input)) > 0) {
         if (!is_numeric($input) && array_key_exists(strtolower(trim($input)), $mappedFunction)) {
-            echo "Hi";
             return array(true, $mappedFunction[$input]);
         } else {
             return $input;
@@ -172,7 +171,6 @@ function startGame($itemDir)
     $Player = new Player\Player($name);
     $Player->loadLevels();
     clear();
-    $Player->giveXP(100); // Give 100 XP
     $objects = array("Inv" => $Inv, "Story" => $Story, "Player" => $Player);
     return $objects;
 }
@@ -189,16 +187,17 @@ function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
     if ($showText) {
         clear();
         echo($sceneObject->getText() . "\n\n");
+        if ($sceneObject->getVisited() == false && $sceneObject->getFirstText() != null) {
+            echo($sceneObject->getFirstText() . "\n\n");
+        }
     }
     if ($sceneObject->hasGiveItemOnLoad() && $sceneObject->getVisited() == false) {
         givePlayerItems($Inv, $Player, $sceneObject->getGive());
-        $sceneObject->setVisited();
     }
     if ($sceneObject->hasGiveXPOnLoad() && $sceneObject->getVisited() == false) {
         givePlayerXP($Player, $sceneObject->getGiveXP());
-        $sceneObject->setVisited();
     }
-
+    $sceneObject->setVisited();
     $options = $sceneObject->getOptionList();
     showUserOptions($options);
     $userChoice = false;
@@ -331,4 +330,9 @@ function showMenu($Inv)
     echo "\t Menu \n";
     print_r($Inv);
     anyKey();
+}
+function givePlayerXP($Player, $amount)
+{   
+    $Player->giveXP($amount); // Give XP
+    echo "\e[33mXP Given! Amount: ".$amount."  New XP: ".$Player->getXP()."  Lvl: ".$Player->getLevel()."\e[39m\n";
 }

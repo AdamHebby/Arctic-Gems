@@ -30,6 +30,7 @@ class Story
                 $opHidden = isset($options["op-".$opNum]["hidden"]) ? $options["op-".$opNum]["hidden"] : false;
                 $opText = $options["op-".$opNum]["text"];
                 $opRequireditems = isset($options["op-".$opNum]["requireditems"]) ? $options["op-".$opNum]["requireditems"] : null;
+                $opFirstText = isset($options["op-".$opNum]["first-text"]) ? $options["op-".$opNum]["first-text"] : null;
                 $opRequireditemObjects = array();
                 if ($opRequireditems != null) {
                     foreach ($opRequireditems as $item) {
@@ -45,7 +46,7 @@ class Story
                 $optionObjArr["op-".$opNum] = $newOption;
             }
 
-            $newScene = new Scene($id, $name, $text, $give, $giveXP, $optionObjArr, "scene");
+            $newScene = new Scene($id, $name, $text, $opFirstText, $give, $giveXP, $optionObjArr, "scene");
             $this->addScene($newScene);
         }
     }

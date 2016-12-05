@@ -8,7 +8,8 @@ class Scene
     protected $id;
     protected $visited;
     protected $hidden;
-    public function __construct($id, $name, $text, $give, $giveXP, $optionObjArr, $type)
+    protected $firstText;
+    public function __construct($id, $name, $text, $firstText = null, $give, $giveXP, $optionObjArr, $type)
     {
         $this->id = $id;
         $this->name = $name;
@@ -19,6 +20,7 @@ class Scene
         $this->type = $type;
         $this->visited = false;
         $this->hidden = false;
+        $this->firstText = $firstText;
     }
     public function isHidden()
     {
@@ -71,6 +73,10 @@ class Scene
     public function getText()
     {
         return $this->text;
+    }
+    public function getFirstText()
+    {
+        return $this->firstText;
     }
     public function getOptionList()
     {
