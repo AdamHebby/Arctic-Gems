@@ -21,7 +21,7 @@ class Inventory implements \Iterator, \Countable
             $qty = $item["qty"];
             $item = $item["item"];
             if ($qty > 0) {
-                print_r($item->getName() . " " .  $qty . "\n");
+                print_r($item->getName() . " (" .  $qty . ")\n");
             }
         }
     }

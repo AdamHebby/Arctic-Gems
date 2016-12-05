@@ -9,8 +9,9 @@ class Option
     protected $next;
     protected $reqItems = array();
     protected $optionUsed;
+    protected $hiddenOption;
 
-    public function __construct($next = null, $text, $give, $opNumber, $reqItems = null)
+    public function __construct($next = null, $text, $give, $opNumber, $reqItems = null, $hiddenOption)
     {
         $this->text = $text;
         $this->opNumber = $opNumber;
@@ -18,6 +19,11 @@ class Option
         $this->give = $give;
         $this->next = $next;
         $this->optionUsed = false;
+        $this->hiddenOption = $hiddenOption;
+    }
+    public function isHidden()
+    {
+        return $this->hiddenOption;
     }
     public function optionUsed()
     {

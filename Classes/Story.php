@@ -27,6 +27,7 @@ class Story
             $optionObjArr = array();
             for ($opNum=1; $opNum < count($options) + 1; $opNum++) { 
                 $opGoto = isset($options["op-".$opNum]["goto"]) ? $options["op-".$opNum]["goto"] : null;
+                $opHidden = isset($options["op-".$opNum]["hidden"]) ? $options["op-".$opNum]["hidden"] : false;
                 $opText = $options["op-".$opNum]["text"];
                 $opRequireditems = isset($options["op-".$opNum]["requireditems"]) ? $options["op-".$opNum]["requireditems"] : null;
                 $opRequireditemObjects = array();
@@ -40,7 +41,7 @@ class Story
                     }
                 }
                 $opGive = isset($options["op-".$opNum]["give"]) ? $options["op-".$opNum]["give"] : null;
-                $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditemObjects);
+                $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditemObjects, $opHidden);
                 $optionObjArr["op-".$opNum] = $newOption;
             }
 

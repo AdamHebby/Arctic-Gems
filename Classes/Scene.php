@@ -20,6 +20,42 @@ class Scene
         $this->visited = false;
         $this->hidden = false;
     }
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+    public function setVisited()
+    {
+        $this->visited = true;
+    }
+    public function getVisited()
+    {
+        return $this->visited;
+    }
+    public function hasGiveItemOnLoad()
+    {
+        if ($this->give != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function hasGiveXPOnLoad()
+    {
+        if ($this->giveXP != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function getGive()
+    {
+        return $this->give;
+    }
+    public function getGiveXP()
+    {
+        return $this->giveXP;
+    }
     public function getId()
     {
         return $this->id;

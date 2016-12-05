@@ -91,6 +91,49 @@ function ask($input, $inline)
     return $answer;
 }
 
+function anyKey()
+{
+    echo "\n\e[33mPress [ANY] key to continue.\e[39m \n";
+    $term = `stty -g`;
+    system("stty -icanon");
+    fread(STDIN, 1);
+    system("stty sane");
+}
+
+function mappedKeys() // I love this :D
+{
+    $mappedKeys = array("e" => "showInventory", "m" => "showMenu");
+    system("stty -icanon");
+    $input = fread(STDIN, 1);
+    system("stty sane");
+    if (strlen(trim($input)) > 0) {
+        echo chr(8); // Backspace
+        if (!is_numeric($input) && array_key_exists(strtolower(trim($input)), $mappedKeys)) {
+            return array(true, $mappedKeys[$input]);
+        } else {
+            return $input;
+        }
+    }
+    return false;
+}
+
+function readCLine($echo = null)
+{
+    $key = mappedKeys();
+    if ($key[0] === true) {
+        return $key;
+    } elseif ($key != false){
+        $line = readline($echo . $key);
+        if (strlen($line) == 0 && $line == null) {
+            return $key;
+        } else {
+            return $line;
+        }
+    } else {
+        return null;
+    }
+}
+
 function customError($n, $rl)
 {
     switch ($n) {
@@ -153,29 +196,41 @@ function nextScene($Inv, $Story, $Player)
 function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
 {
     if ($showText) {
+        clear();
         echo($sceneObject->getText() . "\n\n");
     }
+    if ($sceneObject->hasGiveItemOnLoad() && $sceneObject->getVisited() == false) {
+        givePlayerItems($Inv, $Player, $sceneObject->getGive());
+        $sceneObject->setVisited();
+    }
+    if ($sceneObject->hasGiveXPOnLoad() && $sceneObject->getVisited() == false) {
+        givePlayerXP($Player, $sceneObject->getGiveXP());
+        $sceneObject->setVisited();
+    }
+
     $options = $sceneObject->getOptionList();
     showUserOptions($options);
     $userChoice = false;
     while ($userChoice == false) {
-        $userChoice = getUserChoice($Player->getName(), count($options));
+        $userChoice = getUserChoice($Inv, $Story, $Player, $sceneObject, $Player->getName(), count($options));
     }
     $chosenOption = $options["op-".$userChoice];
     $parsed = parseUserChoice($Inv, $Player, $chosenOption);
     if ($parsed == true) {
         nextScene($Inv, $Story, $Player);
     } else {
-        showScene($Inv, $Story, $Player, $sceneObject, false);
+        showScene($Inv, $Story, $Player, $sceneObject, true);
     }
 }
 
 function showUserOptions($options)
 {
     foreach ($options as $key => $option) {
-        $optionText = $option->getOptionText();
-        $optionNumber = split('-', $key);
-        echo "[$optionNumber[1]] $optionText \n";
+        if ($option->isHidden() == false) {
+            $optionText = $option->getOptionText();
+            $optionNumber = split('-', $key);
+            echo "[$optionNumber[1]] $optionText \n";
+        }
     }
 }
 
@@ -191,6 +246,7 @@ function denyRequiredItems($reqItems, $neededItems)
         }
         echo "  $itemName ($itemQty) \n";
     }
+    anyKey();
     echo "\n";
 }
 function parseUserChoice($Inv, $Player, $chosenOption)
@@ -232,6 +288,10 @@ function parseOptionImpact($Inv, $Player, $chosenOption)
     if ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == false) {
         givePlayerItems($Inv, $Player, $chosenOption->getGive());
         $chosenOption->optionUsed();
+        readline();
+    } elseif ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == true) {
+        echo "There is nothing else here\n";
+        readline();
     }
 }
 
@@ -243,14 +303,20 @@ function givePlayerItems($Inv, $Player, $giveItems)
         $itemName = $itemObj->getName();
         echo $giveOptions["text"] . "\n\n";
         echo "\e[33mItem Found! +$count '$itemName'\e[39m\n";
+        $Inv->updateItem($itemObj, $count);
     }
     echo "\n";
 }
 
-function getUserChoice($userName, $optionCount)
+function getUserChoice($Inv, $Story, $Player, $sceneObject, $userName, $optionCount)
 {   
     echo "\033[32mEnter a number that represents an option.\033[0m \n";
-    $userChoice = readline("$userName > ");
+    echo "$userName >";
+    $userChoice = readCLine();
+    if (is_array($userChoice) && $userChoice[0] == true) {
+        $userChoice[1]($Inv, $Story, $Player);
+        showScene($Inv, $Story, $Player, $sceneObject, true);
+    }
     if ($userChoice > $optionCount) {
         customError(4, true);
         return false;
@@ -259,4 +325,12 @@ function getUserChoice($userName, $optionCount)
         return false;
     }
     return $userChoice;
+}
+
+function showInventory($Inv)
+{
+    clear();
+    echo "\t Inventory \n";
+    $Inv->showPlayerItems();
+    anyKey();
 }
