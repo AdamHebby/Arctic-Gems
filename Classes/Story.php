@@ -51,7 +51,11 @@ class Story
     }
     public function getScene($name)
     {
-        return $this->scenes[$name];
+        if (isset($this->scenes[$name])) {
+            return $this->scenes[$name];
+        } else {
+            exit("$name Does not exist! \n");
+        }
     }
     public function isEmpty()
     {

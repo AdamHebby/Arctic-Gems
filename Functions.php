@@ -100,16 +100,13 @@ function anyKey()
     system("stty sane");
 }
 
-function mappedKeys() // I love this :D
+function isMappedFunction($input) // I love this :D
 {
-    $mappedKeys = array("e" => "showInventory", "m" => "showMenu");
-    system("stty -icanon");
-    $input = fread(STDIN, 1);
-    system("stty sane");
+    $mappedFunction = array("inv" => "showInventory", "menu" => "showMenu");
     if (strlen(trim($input)) > 0) {
-        echo chr(8); // Backspace
-        if (!is_numeric($input) && array_key_exists(strtolower(trim($input)), $mappedKeys)) {
-            return array(true, $mappedKeys[$input]);
+        if (!is_numeric($input) && array_key_exists(strtolower(trim($input)), $mappedFunction)) {
+            echo "Hi";
+            return array(true, $mappedFunction[$input]);
         } else {
             return $input;
         }
@@ -119,18 +116,12 @@ function mappedKeys() // I love this :D
 
 function readCLine($echo = null)
 {
-    $key = mappedKeys();
-    if ($key[0] === true) {
-        return $key;
-    } elseif ($key != false){
-        $line = readline($echo . $key);
-        if (strlen($line) == 0 && $line == null) {
-            return $key;
-        } else {
-            return $line;
-        }
-    } else {
-        return null;
+    $line = readline();
+    $mappedFunction = isMappedFunction($line);
+    if (is_array($mappedFunction) && $mappedFunction[0] === true) {
+        return $mappedFunction;
+    } elseif ($mappedFunction != false){
+        return $line;
     }
 }
 
@@ -228,7 +219,7 @@ function showUserOptions($options)
     foreach ($options as $key => $option) {
         if ($option->isHidden() == false) {
             $optionText = $option->getOptionText();
-            $optionNumber = split('-', $key);
+            $optionNumber = explode('-', $key); // Explode works in php7, split doesnt
             echo "[$optionNumber[1]] $optionText \n";
         }
     }
@@ -243,8 +234,8 @@ function denyRequiredItems($reqItems, $neededItems)
         $itemQty = $item["qty"];
         if (isset($neededItems[$itemId])) {
             $itemQty = $neededItems[$itemId]["qtyNeeded"];
+            echo "  $itemName ($itemQty) \n";
         }
-        echo "  $itemName ($itemQty) \n";
     }
     anyKey();
     echo "\n";
@@ -332,5 +323,12 @@ function showInventory($Inv)
     clear();
     echo "\t Inventory \n";
     $Inv->showPlayerItems();
+    anyKey();
+}
+function showMenu($Inv)
+{
+    clear();
+    echo "\t Menu \n";
+    print_r($Inv);
     anyKey();
 }

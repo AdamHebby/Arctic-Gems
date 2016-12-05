@@ -78,6 +78,16 @@
 					"text": "Check the cabinet"
 				},
 				"op-2": {
+					"give": {
+						"ITEM_002": {
+							"text": "You have found a torch!",
+							"id": "ITEM_002",
+							"count": 1
+						}
+					},
+					"text": "Check under the bed"
+				},
+				"op-3": {
 					"goto": "SCENE_001",
 					"text": "Leave the shack"
 				}
