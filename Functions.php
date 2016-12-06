@@ -115,7 +115,7 @@ function isMappedFunction($input) // I love this :D
 
 function readCLine($echo = null)
 {
-    $line = readline();
+    $line = readline($echo);
     $mappedFunction = isMappedFunction($line);
     if (is_array($mappedFunction) && $mappedFunction[0] === true) {
         return $mappedFunction;
@@ -301,8 +301,7 @@ function givePlayerItems($Inv, $Player, $giveItems)
 function getUserChoice($Inv, $Story, $Player, $sceneObject, $userName, $optionCount)
 {   
     echo "\033[32mEnter a number that represents an option.\033[0m \n";
-    echo "$userName >";
-    $userChoice = readCLine();
+    $userChoice = readCLine("$userName >");
     if (is_array($userChoice) && $userChoice[0] == true) {
         $userChoice[1]($Inv, $Story, $Player);
         showScene($Inv, $Story, $Player, $sceneObject, true);

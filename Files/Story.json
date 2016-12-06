@@ -104,7 +104,6 @@
 					"text": "Head back towards your shack"
 				},
 				"op-2": {
-					"goto": "SCENE_004",
 					"text": "Check the surrounding area",
 					"unlocks": {
 						"text": "You notice a log cabin in the distance",
