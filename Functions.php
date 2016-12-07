@@ -124,6 +124,21 @@ function readCLine($echo = null)
     }
 }
 
+function getMenuOption($echo = null)
+{
+    $menuOptions = array("upgradeItems", "upgradeSkills", "saveGame", "loadGame", "exitGame");
+    $line = readline($echo);
+    if (strlen(trim($line)) > 0 && is_numeric($line) && array_key_exists(trim($line) - 2, $menuOptions)) {
+        if (trim($line) == 1) {
+            return null;
+        }
+        return array(true, $menuOptions[$line - 2]);
+    } elseif (!strlen(trim($line)) > 0 || !is_numeric($line)) {
+        customError(4, true);
+        return null;
+    }
+}
+
 function customError($n, $rl)
 {
     switch ($n) {
@@ -143,7 +158,7 @@ function customError($n, $rl)
             break;
     }
     if ($rl) {
-        readline();
+        anyKey();
     }
 }
 
@@ -349,8 +364,14 @@ function showMenu($Inv)
 {
     clear();
     echo "\t Menu \n";
-    print_r($Inv);
-    anyKey();
+    echo "1) Return \n2) Upgrade Items \n3) Upgrade Skills \n4) Save Game \n5) Load Game \n6) Exit Game\n";
+    echo "\033[32mEnter a number that represents an option.\033[0m \n";
+    $option = getMenuOption();
+    if (is_array($option) && $option[0] === true) {
+        // $option[1](); // RUN USER SELECTED FUNCTION - Not built yet
+        echo "In progress \n";
+        anyKey();
+    }
 }
 function givePlayerXP($Player, $amount)
 {   
