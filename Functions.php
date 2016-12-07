@@ -171,7 +171,8 @@ function startGame($itemDir)
     $Player = new Player\Player($name);
     $Player->loadLevels();
     clear();
-    $objects = array("Inv" => $Inv, "Story" => $Story, "Player" => $Player);
+    $objects = array("Inv" => &$Inv, "Story" => &$Story, "Player" => &$Player); // & References the original Values
+    $Player->StoreReferences($objects);
     return $objects;
 }
 
@@ -198,14 +199,14 @@ function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
         givePlayerXP($Player, $sceneObject->getGiveXP());
     }
     $sceneObject->setVisited();
-    $options = $sceneObject->getOptionList();
+    $options = $sceneObject->getOptionObj();
     showUserOptions($options);
     $userChoice = false;
     while ($userChoice == false) {
         $userChoice = getUserChoice($Inv, $Story, $Player, $sceneObject, $Player->getName(), count($options));
     }
     $chosenOption = $options["op-".$userChoice];
-    $parsed = parseUserChoice($Inv, $Player, $chosenOption);
+    $parsed = parseUserChoice($Inv, $Player, $chosenOption, $sceneObject);
     if ($parsed == true) {
         nextScene($Inv, $Story, $Player);
     } else {
@@ -239,14 +240,14 @@ function denyRequiredItems($reqItems, $neededItems)
     anyKey();
     echo "\n";
 }
-function parseUserChoice($Inv, $Player, $chosenOption)
+function parseUserChoice($Inv, $Player, $chosenOption, $sceneObject)
 {
     if ($chosenOption->hasRequiredItems() == false) {
         $nextScene = $chosenOption->getNextScene();
         if ($nextScene != null) {
             $Player->setCurrentScene($nextScene);
         }
-        parseOptionImpact($Inv, $Player, $chosenOption);
+        parseOptionImpact($Inv, $Player, $chosenOption, $sceneObject);
         return true;
     } else {
         $reqItems = $chosenOption->getRequiredItems();
@@ -267,13 +268,13 @@ function parseUserChoice($Inv, $Player, $chosenOption)
             if ($nextScene != null) {
                 $Player->setCurrentScene($nextScene);
             }
-            parseOptionImpact($Inv, $Player, $chosenOption);
+            parseOptionImpact($Inv, $Player, $chosenOption, $sceneObject);
             return true;
         }
     }
 }
 
-function parseOptionImpact($Inv, $Player, $chosenOption)
+function parseOptionImpact($Inv, $Player, $chosenOption, $sceneObject)
 {
     if ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == false) {
         givePlayerItems($Inv, $Player, $chosenOption->getGive());
@@ -282,6 +283,27 @@ function parseOptionImpact($Inv, $Player, $chosenOption)
     } elseif ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == true) {
         echo "There is nothing else here\n";
         readline();
+    }
+    if ($chosenOption->unlocks() === true && $chosenOption->getOptionUsed() == false) {
+        unlockStoryLine($Inv, $Player, $chosenOption, $sceneObject);
+    }
+}
+
+function unlockStoryLine($Inv, $Player, $chosenOption, $sceneObject)
+{
+    $unlock = $chosenOption->getUnlock();
+    if (isset($unlock["new-option"])) {
+        echo $unlock["text"] . "\n";
+        $optionObj = $sceneObject->getOptionObj($unlock["new-option"]);
+        $optionObj->setHidden(false);
+        echo "\e[33mUnlocked New Option! \e[39m\n";
+        anyKey();
+    }
+    if (isset($unlock["new-scene"])) {
+
+    }
+    if (isset($unlock["new-item"])) {
+
     }
 }
 

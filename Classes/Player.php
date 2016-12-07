@@ -11,11 +11,20 @@ class Player
     protected $levels = array();
     protected $continuePlaying = true;
     protected $currentScene = "SCENE_INTRO";
+    protected $objectReferences;
 
     public function __construct($name)
     {
         $this->name = $name;
         $this->continuePlaying = true;
+    }
+    public function getReferences()
+    {
+        return $this->objectReferences;
+    }
+    public function StoreReferences($objects)
+    {
+        $this->objectReferences = $objects;
     }
     public function loadLevels()
     {

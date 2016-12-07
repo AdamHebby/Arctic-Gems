@@ -78,9 +78,13 @@ class Scene
     {
         return $this->firstText;
     }
-    public function getOptionList()
+    public function getOptionObj($option = null)
     {
-        return $this->optionObjArr;
+        if ($option == null) {
+            return $this->optionObjArr;
+        } elseif (isset($this->optionObjArr[$option])) {
+            return $this->optionObjArr[$option];
+        }
     }
     public function setId($input)
     {

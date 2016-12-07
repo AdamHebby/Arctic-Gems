@@ -10,8 +10,9 @@ class Option
     protected $reqItems = array();
     protected $optionUsed;
     protected $hiddenOption;
+    protected $unlocks;
 
-    public function __construct($next = null, $text, $give, $opNumber, $reqItems = null, $hiddenOption)
+    public function __construct($next = null, $text, $give, $opNumber, $reqItems = null, $hiddenOption, $unlocks = null)
     {
         $this->text = $text;
         $this->opNumber = $opNumber;
@@ -20,10 +21,27 @@ class Option
         $this->next = $next;
         $this->optionUsed = false;
         $this->hiddenOption = $hiddenOption;
+        $this->unlocks = $unlocks;
+    }
+    public function unlocks()
+    {
+        if ($this->unlocks != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function getUnlock()
+    {
+        return $this->unlocks;
     }
     public function isHidden()
     {
         return $this->hiddenOption;
+    }
+    public function setHidden($bool = true)
+    {
+        return $this->hiddenOption = $bool;
     }
     public function optionUsed()
     {
