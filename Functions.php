@@ -294,13 +294,17 @@ function parseOptionImpact($Inv, $Player, $chosenOption, $sceneObject)
     if ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == false) {
         givePlayerItems($Inv, $Player, $chosenOption->getGive());
         $chosenOption->optionUsed();
-        readline();
+        anyKey();
     } elseif ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == true) {
         echo "There is nothing else here\n";
-        readline();
+        anyKey();
     }
     if ($chosenOption->unlocks() === true && $chosenOption->getOptionUsed() == false) {
+        $chosenOption->optionUsed();
         unlockStoryLine($Inv, $Player, $chosenOption, $sceneObject);
+    } elseif ($chosenOption->unlocks() === true && $chosenOption->getOptionUsed() == true) {
+        echo "You see nothing new\n";
+        anyKey();
     }
 }
 
