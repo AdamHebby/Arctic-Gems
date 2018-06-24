@@ -5,4 +5,4 @@ Main Game file is Game.php
 
 To run the game:
 
-php Game.php
+`php Game.php`
