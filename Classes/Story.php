@@ -4,12 +4,12 @@ namespace Story;
 class Story
 {
     protected $scenes = array();
-    protected $ids = array();
+    protected $ids    = array();
 
     public function __construct() 
     {
-        $this->scenes = array();
-        $this->ids = array();
+        $this->scenes    = array();
+        $this->ids       = array();
         $this->storyJson = file_get_contents('Files/Story.json');
     }
     public function loadScenes($Inventory)
@@ -17,37 +17,81 @@ class Story
         $json = $this->storyJson;
         $json = json_decode($json, true);
         $json = $json["scenes"];
+
         foreach ($json as $k => $v) { // Each scene
-            $id = $k;
-            $name = $v["name"];
-            $text = $v["text"];
-            $give = isset($v["give"]) ? $v["give"] : null;
-            $giveXP = isset($v["xp"]) ? $v["xp"] : 0;
-            $firstText = isset($v["first-text"]) ? $v["first-text"] : null;
-            $options = $v["options"];
+            $id           = $k;
+            $name         = $v["name"];
+            $text         = $v["text"];
+            $give         = isset($v["give"]) ? $v["give"] : null;
+            $giveXP       = isset($v["xp"]) ? $v["xp"] : 0;
+            $firstText    = isset($v["first-text"]) ? $v["first-text"] : null;
+            $options      = $v["options"];
             $optionObjArr = array();
-            for ($opNum=1; $opNum < count($options) + 1; $opNum++) { 
-                $opGoto = isset($options["op-".$opNum]["goto"]) ? $options["op-".$opNum]["goto"] : null;
-                $opHidden = isset($options["op-".$opNum]["hidden"]) ? $options["op-".$opNum]["hidden"] : false;
-                $opText = $options["op-".$opNum]["text"];
-                $opRequireditems = isset($options["op-".$opNum]["requireditems"]) ? $options["op-".$opNum]["requireditems"] : null;
-                $opUnlocks = isset($options["op-".$opNum]["unlocks"]) ? $options["op-".$opNum]["unlocks"] : null;
+
+            for ($opNum=1; $opNum < count($options) + 1; $opNum++) {
+
+                $opGoto = isset($options["op-$opNum"]["goto"])
+                ? $options["op-$opNum"]["goto"]
+                : null;
+
+                $opHidden = isset($options["op-$opNum"]["hidden"])
+                ? $options["op-$opNum"]["hidden"]
+                : false;
+
+                $opText = isset($options["op-$opNum"]["text"])
+                ? $options["op-$opNum"]["text"]
+                : null;
+
+                $opRequireditems = isset($options["op-$opNum"]["requireditems"])
+                ? $options["op-$opNum"]["requireditems"]
+                : null;
+
+                $opUnlocks = isset($options["op-$opNum"]["unlocks"])
+                ? $options["op-$opNum"]["unlocks"]
+                : null;
+
                 $opRequireditemObjects = array();
                 if ($opRequireditems != null) {
                     foreach ($opRequireditems as $item) {
-                        $itemId = $item["id"];
-                        $qty = $item["count"];
+                        $itemId  = $item["id"];
+                        $qty     = $item["count"];
                         $reqItem = $Inventory->getItemByID($item["id"]);
-                        $index = array_search($reqItem->getId(), $opRequireditems);
-                        $opRequireditemObjects[$itemId] = array("item" => $reqItem, "qty" => $qty);
+                        $index   = array_search(
+                            $reqItem->getId(),
+                            $opRequireditems
+                        );
+                        $opRequireditemObjects[$itemId] = array(
+                            "item" => $reqItem,
+                            "qty" => $qty
+                        );
                     }
                 }
-                $opGive = isset($options["op-".$opNum]["give"]) ? $options["op-".$opNum]["give"] : null;
-                $newOption = new Option($opGoto, $opText, $opGive, $opNum, $opRequireditemObjects, $opHidden, $opUnlocks);
-                $optionObjArr["op-".$opNum] = $newOption;
+                $opGive = isset($options["op-$opNum"]["give"])
+                    ? $options["op-$opNum"]["give"]
+                    : null;
+
+                $newOption = new Option(
+                    $opGoto,
+                    $opText,
+                    $opGive,
+                    $opNum,
+                    $opRequireditemObjects,
+                    $opHidden,
+                    $opUnlocks
+                );
+                $optionObjArr["op-$opNum"] = $newOption;
             }
 
-            $newScene = new Scene($id, $name, $text, $firstText, $give, $giveXP, $optionObjArr, "scene");
+            $newScene = new Scene(
+                $id,
+                $name,
+                $text,
+                $firstText,
+                $give,
+                $giveXP,
+                $optionObjArr,
+                "scene"
+            );
             $this->addScene($newScene);
         }
     }
@@ -67,7 +111,9 @@ class Story
     {
         $id = $scene->getId();
         if (!$id) {
-            throw new Exception('The Story requires scenes with unique ID values.');
+            throw new Exception(
+                'The Story requires scenes with unique ID values.'
+            );
         }
         $this->scenes[$id] = array('scene' => $scene);
         $this->ids[] = $id;

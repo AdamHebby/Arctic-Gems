@@ -9,18 +9,28 @@ class Scene
     protected $visited;
     protected $hidden;
     protected $firstText;
-    public function __construct($id, $name, $text, $firstText = null, $give, $giveXP, $optionObjArr, $type)
+
+    public function __construct(
+        $id,
+        $name,
+        $text,
+        $firstText = null,
+        $give,
+        $giveXP,
+        $optionObjArr,
+        $type
+    )
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->text = $text;
-        $this->give = $give;
-        $this->giveXP = $giveXP;
+        $this->id           = $id;
+        $this->name         = $name;
+        $this->text         = $text;
+        $this->give         = $give;
+        $this->giveXP       = $giveXP;
         $this->optionObjArr = $optionObjArr;
-        $this->type = $type;
-        $this->visited = false;
-        $this->hidden = false;
-        $this->firstText = $firstText;
+        $this->type         = $type;
+        $this->visited      = false;
+        $this->hidden       = false;
+        $this->firstText    = $firstText;
     }
     public function isHidden()
     {
@@ -46,9 +56,8 @@ class Scene
     {
         if ($this->giveXP != null) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
     public function getGive()
     {

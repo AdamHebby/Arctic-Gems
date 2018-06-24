@@ -3,13 +3,14 @@ namespace Inventory;
 
 class Inventory implements \Iterator, \Countable
 {
-    protected $items = array();
+    protected $items    = array();
     protected $position = 0;
-    protected $ids = array();
+    protected $ids      = array();
+
     public function __construct()
     {
         $this->items = array();
-        $this->ids = array();
+        $this->ids   = array();
     }
     public function isEmpty()
     {
@@ -37,7 +38,9 @@ class Inventory implements \Iterator, \Countable
     {
         $id = $item->getId();
         if (!$id) {
-            throw new \Exception('The Inventory requires items with unique ID values.');
+            throw new \Exception(
+                'The Inventory requires items with unique ID values.'
+            );
         }
         if (isset($this->items[$id])) {
             $this->updateItem($item, $this->items[$id]['qty'] + 0);
@@ -69,11 +72,9 @@ class Inventory implements \Iterator, \Countable
         $id = $item->getId();
         if (isset($this->items[$id])) {
             unset($this->items[$id]);
-    
-           
             $index = array_search($id, $this->ids);
             unset($this->ids[$index]);
-           
+
             $this->ids = array_values($this->ids);
         }
     }

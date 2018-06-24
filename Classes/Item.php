@@ -12,17 +12,28 @@ class Item
     protected $inventorySpace;
     protected $critDamage;
     protected $critChance;
-    public function __construct($id, $name, $type, $hp = 0, $damage = null, $givesHealth = null, $inventorySpace = 1, $critDamage = null, $critChance = null) 
+
+    public function __construct(
+        $id,
+        $name,
+        $type,
+        $hp = 0,
+        $damage = null,
+        $givesHealth = null,
+        $inventorySpace = 1,
+        $critDamage = null,
+        $critChance = null
+    )
     {
-        $this->id = $id;
-        $this->name = $name;
-        $this->type = $type;
-        $this->hp = $hp;
-        $this->damage = $damage;
-        $this->givesHealth = $givesHealth;
+        $this->id             = $id;
+        $this->name           = $name;
+        $this->type           = $type;
+        $this->hp             = $hp;
+        $this->damage         = $damage;
+        $this->givesHealth    = $givesHealth;
         $this->inventorySpace = $inventorySpace;
-        $this->critDamage = $critDamage;
-        $this->critChance = $critChance;
+        $this->critDamage     = $critDamage;
+        $this->critChance     = $critChance;
     }
     public function getId()
     {
