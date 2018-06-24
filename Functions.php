@@ -11,7 +11,7 @@ function getOptions($file)
         "InventorySpace" => "",
         "CriticalDamage" => "",
         "CriticalChance" => ""
-        );
+    );
     $handle = fopen($file, "r");
     if ($handle) {
         while (($line = fgets($handle)) !== false) {
@@ -23,12 +23,12 @@ function getOptions($file)
 
         fclose($handle);
     } else {
-       
+
     }
     return $options;
 }
 
-function loadItems($Inv, $itemDir)
+function loadItems(&$Inv, $itemDir)
 {
     foreach ($itemDir as $val) {
         if ($handle = opendir($val)) {
@@ -56,7 +56,7 @@ function loadItems($Inv, $itemDir)
     }
 }
 
-function listItems($Inv)
+function listItems(&$Inv)
 {
     foreach ($Inv as $key => $value) {
         echo($value['item']->getId()." ".$value['item']->getName()."\n");
@@ -119,14 +119,14 @@ function readCLine($echo = null)
     $mappedFunction = isMappedFunction($line);
     if (is_array($mappedFunction) && $mappedFunction[0] === true) {
         return $mappedFunction;
-    } elseif ($mappedFunction != false){
+    } elseif ($mappedFunction != false) {
         return $line;
     }
 }
 
 function getMenuOption($echo = null)
 {
-    $menuOptions = array("upgradeItems", "upgradeSkills", "saveGame", "loadGame", "exitGame");
+    $menuOptions = array("saveGame", "loadGame", "exitGame");
     $line = readline($echo);
     if (strlen(trim($line)) > 0 && is_numeric($line) && array_key_exists(trim($line) - 2, $menuOptions)) {
         if (trim($line) == 1) {
@@ -139,23 +139,62 @@ function getMenuOption($echo = null)
     }
 }
 
+function saveGame(&$Inv, &$Story, &$Player, &$sceneObject)
+{
+    $objects = array($Inv, $Story, $Player, $sceneObject);
+    $compressed = gzcompress(serialize($objects), 9);
+    $date = date('Y-m-d-H-i-s');
+    file_put_contents("Files/gamesaves/$date.data", $compressed);
+    echo "\033[32mGame Saved!\033[0m \n";
+}
+
+function loadGame(&$Inv, &$Story, &$Player, &$sceneObject)
+{
+    clear();
+    echo "\033[32mWhich save would you like to load?\033[0m \n";
+    $saveDir = 'Files/gamesaves/';
+    $saves = array_diff(scandir($saveDir), array('..', '.'));
+    $saves = array_values($saves);
+    foreach ($saves as $key => $value) {
+        echo $key + 1 . ") $value \n";
+    }
+    $userChoice = readCLine("{$Player->getName()} >");
+    $userChoice--;
+    if (isset($saves[$userChoice])) {
+        $contents = file_get_contents("Files/gamesaves/{$saves[$userChoice]}");
+        $contents = unserialize(gzuncompress($contents));
+        $Inv = $contents[0];
+        $Story = $contents[1];
+        $Player = $contents[2];
+        $sceneObject = $contents[3];
+        echo "\033[32mGame Loaded!\033[0m \n";
+        return;
+    }
+    return;
+}
+
+function exitGame()
+{
+    exit();
+}
+
 function customError($n, $rl)
 {
     switch ($n) {
-        case 1:
-            echo "Invalid Input! \n";
-            break;
-        case 2:
-            echo "Invalid Input! Must not be longer than 15 characters \n";
-            break;
-        case 3:
-            echo "Invalid Input! Must contain only characters \n";
-            break;
-        case 4:
-            echo "Invalid Input! That is not an option \n";
-            break;
-        default:
-            break;
+    case 1:
+        echo "Invalid Input! \n";
+        break;
+    case 2:
+        echo "Invalid Input! Must not be longer than 15 characters \n";
+        break;
+    case 3:
+        echo "Invalid Input! Must contain only characters \n";
+        break;
+    case 4:
+        echo "Invalid Input! That is not an option \n";
+        break;
+    default:
+        break;
     }
     if ($rl) {
         anyKey();
@@ -191,14 +230,14 @@ function startGame($itemDir)
     return $objects;
 }
 
-function nextScene($Inv, $Story, $Player)
+function nextScene(&$Inv, &$Story, &$Player)
 {
     $sceneObject = $Story->getScene($Player->getCurrentScene());
     $sceneObject = $sceneObject["scene"];
     showScene($Inv, $Story, $Player, $sceneObject, true);
 }
 
-function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
+function showScene(&$Inv, &$Story, &$Player, Story\Scene &$sceneObject, $showText)
 {
     if ($showText) {
         clear();
@@ -218,7 +257,7 @@ function showScene($Inv, $Story, $Player, Story\Scene $sceneObject, $showText)
     showUserOptions($options);
     $userChoice = false;
     while ($userChoice == false) {
-        $userChoice = getUserChoice($Inv, $Story, $Player, $sceneObject, $Player->getName(), count($options));
+        $userChoice = getUserChoice($Inv, $Story, $Player, $sceneObject, count($options));
     }
     $chosenOption = $options["op-".$userChoice];
     $parsed = parseUserChoice($Inv, $Player, $chosenOption, $sceneObject);
@@ -255,7 +294,7 @@ function denyRequiredItems($reqItems, $neededItems)
     anyKey();
     echo "\n";
 }
-function parseUserChoice($Inv, $Player, $chosenOption, $sceneObject)
+function parseUserChoice(&$Inv, &$Player, &$chosenOption, &$sceneObject)
 {
     if ($chosenOption->hasRequiredItems() == false) {
         $nextScene = $chosenOption->getNextScene();
@@ -289,26 +328,26 @@ function parseUserChoice($Inv, $Player, $chosenOption, $sceneObject)
     }
 }
 
-function parseOptionImpact($Inv, $Player, $chosenOption, $sceneObject)
+function parseOptionImpact(&$Inv, &$Player, &$chosenOption, &$sceneObject)
 {
-    if ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == false) {
+    if ($chosenOption->getGive() != null && !$chosenOption->getOptionUsed()) {
         givePlayerItems($Inv, $Player, $chosenOption->getGive());
         $chosenOption->optionUsed();
         anyKey();
-    } elseif ($chosenOption->getGive() != null && $chosenOption->getOptionUsed() == true) {
+    } elseif ($chosenOption->getGive() != null && $chosenOption->getOptionUsed()) {
         echo "There is nothing else here\n";
         anyKey();
     }
-    if ($chosenOption->unlocks() === true && $chosenOption->getOptionUsed() == false) {
+    if ($chosenOption->unlocks() === true && !$chosenOption->getOptionUsed()) {
         $chosenOption->optionUsed();
         unlockStoryLine($Inv, $Player, $chosenOption, $sceneObject);
-    } elseif ($chosenOption->unlocks() === true && $chosenOption->getOptionUsed() == true) {
+    } elseif ($chosenOption->unlocks() === true && $chosenOption->getOptionUsed()) {
         echo "You see nothing new\n";
         anyKey();
     }
 }
 
-function unlockStoryLine($Inv, $Player, $chosenOption, $sceneObject)
+function unlockStoryLine(&$Inv, &$Player, $chosenOption, &$sceneObject)
 {
     $unlock = $chosenOption->getUnlock();
     if (isset($unlock["new-option"])) {
@@ -326,7 +365,7 @@ function unlockStoryLine($Inv, $Player, $chosenOption, $sceneObject)
     }
 }
 
-function givePlayerItems($Inv, $Player, $giveItems)
+function givePlayerItems(&$Inv, &$Player, $giveItems)
 {
     foreach ($giveItems as $giveId => $giveOptions) {
         $count = $giveOptions["count"];
@@ -339,12 +378,12 @@ function givePlayerItems($Inv, $Player, $giveItems)
     echo "\n";
 }
 
-function getUserChoice($Inv, $Story, $Player, $sceneObject, $userName, $optionCount)
-{   
+function getUserChoice(&$Inv, &$Story, &$Player, &$sceneObject, $optionCount) 
+{
     echo "\033[32mEnter a number that represents an option.\033[0m \n";
-    $userChoice = readCLine("$userName >");
+    $userChoice = readCLine("{$Player->getName()} >");
     if (is_array($userChoice) && $userChoice[0] == true) {
-        $userChoice[1]($Inv, $Story, $Player);
+        $userChoice[1]($Inv, $Story, $Player, $sceneObject);
         showScene($Inv, $Story, $Player, $sceneObject, true);
     }
     if ($userChoice > $optionCount) {
@@ -357,28 +396,29 @@ function getUserChoice($Inv, $Story, $Player, $sceneObject, $userName, $optionCo
     return $userChoice;
 }
 
-function showInventory($Inv)
+function showInventory(&$Inv)
 {
     clear();
     echo "\t Inventory \n";
     $Inv->showPlayerItems();
     anyKey();
 }
-function showMenu($Inv)
+function showMenu(&$Inv, &$Story, &$Player, &$sceneObject)
 {
     clear();
     echo "\t Menu \n";
-    echo "1) Return \n2) Upgrade Items \n3) Upgrade Skills \n4) Save Game \n5) Load Game \n6) Exit Game\n";
+    echo "1) Return \n2) Save Game \n3) Load Game \n4) Exit Game\n";
     echo "\033[32mEnter a number that represents an option.\033[0m \n";
     $option = getMenuOption();
     if (is_array($option) && $option[0] === true) {
-        // $option[1](); // RUN USER SELECTED FUNCTION - Not built yet
-        echo "In progress \n";
+        // RUN USER SELECTED FUNCTION
+        $option[1]($Inv, $Story, $Player, $sceneObject);
         anyKey();
     }
 }
 function givePlayerXP($Player, $amount)
-{   
+{
     $Player->giveXP($amount); // Give XP
-    echo "\e[33mXP Given! Amount: ".$amount."  New XP: ".$Player->getXP()."  Lvl: ".$Player->getLevel()."\e[39m\n";
+    echo "\e[33mXP Given! Amount: $amount New XP: {$Player->getXP()} ";
+    echo "Lvl: {$Player->getLevel()} \e[39m\n";
 }

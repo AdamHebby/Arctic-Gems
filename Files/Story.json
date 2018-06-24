@@ -1,121 +1,144 @@
 {
-	"scenes": {
-		"SCENE_INTRO": {
-			"name": "Introduction",
-			"text": "Welcome to Arctic Gems! \nYou start on a very cold Arctic morning, the sun is just rising and you can still hear the small plane that just dropped you off disappearing in the distance. \nYou have been provided with a small shack, it doesn't offer a lot of protection \nYour mission, is to find the lost Gems of Capistrano. Good luck, you'll need it.",
-			"give": {
-				"ITEM_006": {
-					"text": "Here, have some bread",
-					"id": "ITEM_006",
-					"count": 3
-				}
-			},
-			"xp": "50",
-			"options": {
-				"op-1": {
-					"goto": "SCENE_002",
-					"text": "Go to your small shack"
-				},
-				"op-2": {
-					"goto": "SCENE_003",
-					"text": "Head into the thick woods",
-					"requireditems": {
-						"ITEM_002": {
-							"id": "ITEM_002",
-							"count": 1
-						},
-						"ITEM_001": {
-							"id": "ITEM_001",
-							"count": 1
-						}
-					}
-				}
-			}
-		},
-		"SCENE_001": {
-			"name": "The Start",
-			"text": "You are back where you started.",
-			"options": {
-				"op-1": {
-					"goto": "SCENE_002",
-					"text": "Go to your small shack"
-				},
-				"op-2": {
-					"goto": "SCENE_003",
-					"text": "Head into the thick woods",
-					"requireditems": {
-						"ITEM_002": {
-							"id": "ITEM_002",
-							"count": 1
-						},
-						"ITEM_001": {
-							"id": "ITEM_001",
-							"count": 1
-						}
-					}
-				}
-			}
-		},
-		"SCENE_002": {
-			"name": "The Cabin",
-			"text": "You are now in your small shack, there is a bed, sink, toilet, radio and a cabinet.",
-			"first-text": "You see something on the floor...and pick it up.",
-			"give": {
-				"ITEM_001": {
-					"text": "You have found a sword, it has a strange red Gem in the pommel of it. You stick this under your belt...be careful.",
-					"id": "ITEM_001",
-					"count": 1
-				}
-			},
-			"options": {
-				"op-1": {
-					"give": {
-						"ITEM_007": {
-							"text": "You have found a key...how strange. It has some engraving on it, it reads 'CAVE DOOR'. How convenient.",
-							"id": "ITEM_007",
-							"count": 1
-						}
-					},
-					"text": "Check the cabinet"
-				},
-				"op-2": {
-					"give": {
-						"ITEM_002": {
-							"text": "You have found a torch!",
-							"id": "ITEM_002",
-							"count": 1
-						}
-					},
-					"text": "Check under the bed"
-				},
-				"op-3": {
-					"goto": "SCENE_001",
-					"text": "Leave the shack"
-				}
-			}
-		},
-		"SCENE_003": {
-			"name": "The Thick Woods",
-			"text": "You are in the thick woods, huge snow-topped trees surround you. The snow here is thick.",
-			"first-text": "Good job you brought your sword, there's no running anywhere fast in here; that's way too dangerous.",
-			"options": {
-				"op-1": {
-					"goto": "SCENE_001",
-					"text": "Head back towards your shack"
-				},
-				"op-2": {
-					"text": "Check the surrounding area",
-					"unlocks": {
-						"text": "You notice a log cabin in the distance",
-						"new-option": "op-3"
-					}
-				},
-				"op-3": {
-					"hidden": true,
-					"goto": "SCENE_005",
-					"text": "Go to the log cabin"
-				}
-			}
-		}
-	}
+    "scenes": {
+        "SCENE_INTRO": {
+            "name": "Introduction",
+            "text": "Welcome to Arctic Gems! \nYou start on a very cold Arctic morning, the sun is just rising and you can still hear the small plane that just dropped you off disappearing in the distance. \nYou have been provided with a small shack, it doesn't offer a lot of protection \nYour mission, is to find the lost Gems of Capistrano. Good luck, you'll need it.",
+            "give": {
+                "ITEM_006": {
+                    "text": "Here, have some bread",
+                    "id": "ITEM_006",
+                    "count": 3
+                }
+            },
+            "xp": "50",
+            "options": {
+                "op-1": {
+                    "goto": "SCENE_002",
+                    "text": "Go to your small shack"
+                },
+                "op-2": {
+                    "goto": "SCENE_003",
+                    "text": "Head into the thick woods",
+                    "requireditems": {
+                        "ITEM_002": {
+                            "id": "ITEM_002",
+                            "count": 1
+                        },
+                        "ITEM_001": {
+                            "id": "ITEM_001",
+                            "count": 1
+                        }
+                    }
+                }
+            }
+        },
+        "SCENE_001": {
+            "name": "The Start",
+            "text": "You are back where you started.",
+            "options": {
+                "op-1": {
+                    "goto": "SCENE_002",
+                    "text": "Go to your small shack"
+                },
+                "op-2": {
+                    "goto": "SCENE_003",
+                    "text": "Head into the thick woods",
+                    "requireditems": {
+                        "ITEM_002": {
+                            "id": "ITEM_002",
+                            "count": 1
+                        },
+                        "ITEM_001": {
+                            "id": "ITEM_001",
+                            "count": 1
+                        }
+                    }
+                }
+            }
+        },
+        "SCENE_002": {
+            "name": "The Cabin",
+            "text": "You are now in your small shack, there is a bed, sink, toilet, radio and a cabinet.",
+            "first-text": "You see something on the floor...and pick it up.",
+            "give": {
+                "ITEM_001": {
+                    "text": "You have found a sword, it has a strange red Gem in the pommel of it. You stick this under your belt...be careful.",
+                    "id": "ITEM_001",
+                    "count": 1
+                }
+            },
+            "options": {
+                "op-1": {
+                    "give": {
+                        "ITEM_007": {
+                            "text": "You have found a key...how strange. It has some engraving on it, it reads 'CAVE DOOR'. How convenient.",
+                            "id": "ITEM_007",
+                            "count": 1
+                        }
+                    },
+                    "text": "Check the cabinet"
+                },
+                "op-2": {
+                    "give": {
+                        "ITEM_002": {
+                            "text": "You have found a torch!",
+                            "id": "ITEM_002",
+                            "count": 1
+                        }
+                    },
+                    "text": "Check under the bed"
+                },
+                "op-3": {
+                    "goto": "SCENE_001",
+                    "text": "Leave the shack"
+                }
+            }
+        },
+        "SCENE_003": {
+            "name": "The Thick Woods",
+            "text": "You are in the thick woods, huge snow-topped trees surround you. The snow here is thick.",
+            "first-text": "Good job you brought your sword, there's no running anywhere fast in here; that's way too dangerous.",
+            "options": {
+                "op-1": {
+                    "goto": "SCENE_001",
+                    "text": "Head back towards your shack"
+                },
+                "op-2": {
+                    "text": "Check the surrounding area",
+                    "unlocks": {
+                        "text": "You notice a log cabin in the distance",
+                        "new-option": "op-3"
+                    }
+                },
+                "op-3": {
+                    "hidden": true,
+                    "goto": "SCENE_004",
+                    "text": "Go to the Log Cabin"
+                }
+            }
+        },
+        "SCENE_004": {
+            "name": "Outside The Log Cabin",
+            "text": "You are stood infront of the log cabin, it is entirely made of logs of wood planks and has 4 steps leading up to the door. The metal wind chimes are slowly swinging in the wind.",
+            "first-text": "You've made the 10 minute walk to the log cabin and now your legs are freezing from walking in the snow.",
+            "options": {
+                "op-1": {
+                    "goto": "SCENE_005",
+                    "text": "Go into the log cabin"
+                },
+                "op-2": {
+                    "goto": "SCENE_006",
+                    "text": "Go around the back of the log cabin"
+                },
+                "op-3": {
+                    "goto": "SCENE_007",
+                    "text": "Keep going"
+                },
+                "op-4": {
+                    "goto": "SCENE_003",
+                    "text": "Head back"
+                }
+            }
+        }
+    }
 }
